@@ -387,7 +387,15 @@ public class EnteranceView extends JFrame {
 	private void output(PriceMap[] map, int[] goal, int[] inlimit) {
 		// out put method for no additional tray, user sorted Pricemap as
 		// reference to try the lowest possible output in advanced
+		double sum =0 ;
 		File file = new File("output.txt"); // create output file
+		FileWriter fileWriter = null;
+		try {
+			fileWriter = new FileWriter(file);
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		if (!file.exists())
 			try {
 				file.createNewFile();
@@ -402,17 +410,17 @@ public class EnteranceView extends JFrame {
 				if (tgoal > 0 && tlmit > 0) {
 					if (tgoal >= tlmit) {
 						try {
-							FileWriter fileWriter = new FileWriter(file);
+							
 							String s = new String(
 									"转运中心" + map[i].whos / 100 + " ---" + (map[i].whos % 100 <= 1 ? "送至" : "获取") + tlmit
 											+ "件,花费" + tlmit * map[i].price + "----   " + map[i].name + "\n");
-							fileWriter.write(s);
-							fileWriter.close();
+							fileWriter.append(s);
+							
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-
+						sum = sum+tlmit * map[i].price;
 						System.out.println(	"转运中心" + map[i].whos / 100 + " ---" + (map[i].whos % 100 <= 1 ? "送至" : "获取") + tlmit
 								+ "件,花费" + tlmit * map[i].price + "----   " + map[i].name);
 						tgoal = tgoal - tlmit;
@@ -421,16 +429,17 @@ public class EnteranceView extends JFrame {
 						goal[map[i].whos % 100] = tgoal;
 					} else {
 						try {
-							FileWriter fileWriter = new FileWriter(file);
+							
 							String s = new String(
 									"转运中心" + map[i].whos / 100 + " ---" + (map[i].whos % 100 <= 1 ? "送至" : "获取") + tgoal
 											+ "件,花费" + tlmit * map[i].price + "----   " + map[i].name + "\n");
-							fileWriter.write(s);
-							fileWriter.close();
+							fileWriter.append(s);
+							
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
+						sum = sum+tlmit * map[i].price;
 						System.out.println("转运中心" + map[i].whos / 100 + " ---" + (map[i].whos % 100 <= 1 ? "送至" : "获取") + tgoal
 								+ "件,花费" + tlmit * map[i].price + "----   " + map[i].name );
 						tlmit = tlmit - tgoal;
@@ -441,6 +450,15 @@ public class EnteranceView extends JFrame {
 				}
 			}
 		}
+		System.out.println("总花费"+sum);
+		try {
+			fileWriter.append("总花费"+sum);
+			fileWriter.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	private void settext(String H, String a1, String a2, String a3, String a4, String b1, String b2, String b3) {
