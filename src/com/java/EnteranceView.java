@@ -3,7 +3,9 @@ package com.java;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.HashMap;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -35,18 +37,22 @@ public class EnteranceView extends JFrame {
 			jtf2_3 = new JTextField();
 	private String[] titles = new String[8];
 
-	private int Anum, Bnum, Dnum, clickcount = 0;//transport center number, consumer number, deliver number
-	private double transfee[][] = new double[3][4];//transfer fee per distance(km)
-	private double transdis[][] = new double[3][4];//distance of each center and individual(km)
-	private int transabt[][] = new int[3][4];//transport ability of each line
-	private int newtray[] = new int[3];//price for buying new trays
-	private double trayprice[] = new double[3];//price per tray
-	private int inlimit[] = new int[3];//storage limit for center
-	private double inprice[] = new double[3];//storage price per tray
-	private int goal[] = new int[4];//transport goal for each individual
+	private int Anum, Bnum, Dnum, clickcount = 0;// transport center number,
+													// consumer number, deliver
+													// number
+	private double transfee[][] = new double[3][4];// transfer fee per
+													// distance(km)
+	private double transdis[][] = new double[3][4];// distance of each center
+													// and individual(km)
+	private int transabt[][] = new int[3][4];// transport ability of each line
+	private int newtray[] = new int[3];// price for buying new trays
+	private double trayprice[] = new double[3];// price per tray
+	private int inlimit[] = new int[3];// storage limit for center
+	private double inprice[] = new double[3];// storage price per tray
+	private int goal[] = new int[4];// transport goal for each individual
 
-	private double[][] transprice;//transport price without buying new tray
-	private double[][] transaddprice;//transport price with buying new tray
+	private double[][] transprice;// transport price without buying new tray
+	private double[][] transaddprice;// transport price with buying new tray
 
 	private void view1init() {
 		// init swing component
@@ -176,7 +182,7 @@ public class EnteranceView extends JFrame {
 
 					settext(titles[0], titles[1], titles[2], titles[3], titles[4], titles[5], titles[6], titles[7]);
 					break;
-				//4th page
+				// 4th page
 				case 3:
 					transdis = new double[][] {
 							{ jtf1_1.getText().isEmpty() ? 1 : Double.valueOf(jtf1_1.getText()),
@@ -207,7 +213,7 @@ public class EnteranceView extends JFrame {
 
 					settext(titles[0], titles[1], titles[2], titles[3], titles[4], titles[5], titles[6], titles[7]);
 					break;
-				//5th page
+				// 5th page
 				case 4:
 					transabt = new int[][] {
 							{ jtf1_1.getText().isEmpty() ? 0 : Integer.valueOf(jtf1_1.getText()),
@@ -232,7 +238,7 @@ public class EnteranceView extends JFrame {
 
 					settext(titles[0], "数量", "成本", titles[3], titles[4], titles[5], titles[6], titles[7]);
 					break;
-				//6th page
+				// 6th page
 				case 5:
 					newtray = new int[] { jtf1_1.getText().isEmpty() ? 0 : Integer.valueOf(jtf1_1.getText()),
 							jtf1_2.getText().isEmpty() ? 0 : Integer.valueOf(jtf1_2.getText()),
@@ -249,7 +255,7 @@ public class EnteranceView extends JFrame {
 					titles[0] = "库存限制／成本";
 					settext(titles[0], "限制", "成本", titles[3], titles[4], titles[5], titles[6], titles[7]);
 					break;
-				//7th page 
+				// 7th page
 				case 6:
 					inlimit = new int[] { jtf1_1.getText().isEmpty() ? 0 : Integer.valueOf(jtf1_1.getText()),
 							jtf1_2.getText().isEmpty() ? 0 : Integer.valueOf(jtf1_2.getText()),
@@ -270,9 +276,10 @@ public class EnteranceView extends JFrame {
 
 					settext(titles[0], titles[1], titles[2], titles[3], titles[4], "数量", titles[6], titles[7]);
 					break;
-				//the last click of button, first check the data's creditability, and then begin calculate the output. 
+				// the last click of button, first check the data's
+				// creditability, and then begin calculate the output.
 				default:
-					//get last input at first
+					// get last input at first
 					goal = new int[] { jtf1_1.getText().isEmpty() ? 0 : Integer.valueOf(jtf1_1.getText()),
 							jtf2_1.getText().isEmpty() ? 0 : Integer.valueOf(jtf2_1.getText()),
 							jtf3_1.getText().isEmpty() ? 0 : Integer.valueOf(jtf3_1.getText()),
@@ -312,7 +319,8 @@ public class EnteranceView extends JFrame {
 						}
 
 					}
-					//calculate the transport price, which is distance * fee/distance in first page
+					// calculate the transport price, which is distance *
+					// fee/distance in first page
 					transprice = new double[][] {
 							{ transdis[0][0] * transfee[0][0], transdis[0][1] * transfee[0][1],
 									transdis[0][2] * transfee[0][2], transdis[0][3] * transfee[0][3] },
@@ -321,7 +329,7 @@ public class EnteranceView extends JFrame {
 							{ transdis[2][0] * transfee[2][0], transdis[2][1] * transfee[2][1],
 									transdis[2][2] * transfee[2][2], transdis[2][3] * transfee[2][3] } };
 
-					//use the data we get to initialize PriceMap
+					// use the data we get to initialize PriceMap
 					PriceMap[] transmap = new PriceMap[12];
 					for (int i = 0; i < transprice.length; i++) {
 						for (int j = 0; j < transprice[i].length; j++) {
@@ -329,7 +337,8 @@ public class EnteranceView extends JFrame {
 									j <= 1 ? "需求者" + (j + 1) : "返还者" + (j - 1));
 						}
 					}
-					//sort the data according to price in order to generate output later
+					// sort the data according to price in order to generate
+					// output later
 					for (int i = 0; i < transmap.length; i++) {
 						for (int j = i + 1; j < transmap.length; j++) {
 							if (transmap[i].price > transmap[j].price) {
@@ -339,10 +348,10 @@ public class EnteranceView extends JFrame {
 							}
 						}
 					}
-					
+
 					output(transmap, goal, inlimit);
-					////situation that need additional tray 
-//					if (newtray[1] + newtray[2] + newtray[3] < goal[1] +
+					//// situation that need additional tray
+					// if (newtray[1] + newtray[2] + newtray[3] < goal[1] +
 					// goal[2] + goal[3] + goal[4]) {
 					// transaddprice = new double[][] {
 					// { trayprice[0] + transdis[0][0] * transfee[0][0],
@@ -360,7 +369,7 @@ public class EnteranceView extends JFrame {
 					//
 					//
 					// }
-					////situation that no need of additional tray
+					//// situation that no need of additional tray
 					// if (newtray[1] + newtray[2] + newtray[3] >= goal[1] +
 					// goal[2] + goal[3] + goal[4]) {
 					//
@@ -376,22 +385,54 @@ public class EnteranceView extends JFrame {
 	}
 
 	private void output(PriceMap[] map, int[] goal, int[] inlimit) {
-		//out put method for no additional tray, user sorted Pricemap as reference to try the lowest possible output in advanced
+		// out put method for no additional tray, user sorted Pricemap as
+		// reference to try the lowest possible output in advanced
+		File file = new File("output.txt"); // create output file
+		if (!file.exists())
+			try {
+				file.createNewFile();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		for (int i = 0; i < 12; i++) {
 			if (map[i].price >= 0) {
 				int tgoal = goal[map[i].whos % 100];
 				int tlmit = inlimit[map[i].whos / 100];
 				if (tgoal > 0 && tlmit > 0) {
 					if (tgoal >= tlmit) {
-						System.out.println("转运中心" + map[i].whos / 100 + " ---" + tlmit + "件,花费" + tlmit * map[i].price
-								+ "----   " + map[i].name);
+						try {
+							FileWriter fileWriter = new FileWriter(file);
+							String s = new String(
+									"转运中心" + map[i].whos / 100 + " ---" + (map[i].whos % 100 <= 1 ? "送至" : "获取") + tlmit
+											+ "件,花费" + tlmit * map[i].price + "----   " + map[i].name + "\n");
+							fileWriter.write(s);
+							fileWriter.close();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+						System.out.println(	"转运中心" + map[i].whos / 100 + " ---" + (map[i].whos % 100 <= 1 ? "送至" : "获取") + tlmit
+								+ "件,花费" + tlmit * map[i].price + "----   " + map[i].name);
 						tgoal = tgoal - tlmit;
 						tlmit = 0;
 						inlimit[map[i].whos / 100] = tlmit;
 						goal[map[i].whos % 100] = tgoal;
 					} else {
-						System.out.println("转运中心" + map[i].whos / 100 + " ---" + tgoal + "件,花费" + tgoal * map[i].price
-								+ "----   " + map[i].name);
+						try {
+							FileWriter fileWriter = new FileWriter(file);
+							String s = new String(
+									"转运中心" + map[i].whos / 100 + " ---" + (map[i].whos % 100 <= 1 ? "送至" : "获取") + tgoal
+											+ "件,花费" + tlmit * map[i].price + "----   " + map[i].name + "\n");
+							fileWriter.write(s);
+							fileWriter.close();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						System.out.println("转运中心" + map[i].whos / 100 + " ---" + (map[i].whos % 100 <= 1 ? "送至" : "获取") + tgoal
+								+ "件,花费" + tlmit * map[i].price + "----   " + map[i].name );
 						tlmit = tlmit - tgoal;
 						tgoal = 0;
 						inlimit[map[i].whos / 100] = tlmit;
@@ -403,7 +444,8 @@ public class EnteranceView extends JFrame {
 	}
 
 	private void settext(String H, String a1, String a2, String a3, String a4, String b1, String b2, String b3) {
-		//integration of the method of update each page according to columnheads and rowheads
+		// integration of the method of update each page according to
+		// columnheads and rowheads
 		lblNewLabel1_1.setText(b1);
 		lblNewLabel1_2.setText(b2);
 		lblNewLabel1_3.setText(b3);
@@ -503,7 +545,7 @@ public class EnteranceView extends JFrame {
 
 	public EnteranceView() {
 		// TODO Auto-generated constructor stub
-		//set up the entrance page and link it with main pages
+		// set up the entrance page and link it with main pages
 		setTitle("登录界面");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(400, 200, 450, 300);
