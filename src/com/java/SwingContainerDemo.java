@@ -19,12 +19,13 @@ public class SwingContainerDemo {
 //      SwingContainerDemo  swingContainerDemo = new SwingContainerDemo();  
 //      swingContainerDemo.showJFrameDemo();
 //	    final View view = new View();
-//
 //	    view.setVisible(true);
 	   EnteranceView myview = new EnteranceView();
 	   myview.setVisible(true);
+
    }
 
+   //this is the demo from internet, not used in my program, just use its main method for program enteance.
    private void prepareGUI(){
       mainFrame = new JFrame("Java Swing Examples");
       mainFrame.setSize(400,400);
