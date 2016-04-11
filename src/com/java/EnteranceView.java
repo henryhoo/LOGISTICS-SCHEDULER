@@ -23,33 +23,39 @@ public class EnteranceView extends JFrame {
 	private JButton btnNewButton_1;
 	private JButton btnNewButton;
 	private JButton btnNewButton3;
-	private final JLabel lblNewLabel1_1 = new JLabel("转运中心个数");
+
+	private final JLabel lblNewLabel0_0 = new JLabel("");// head name
+	private final JLabel lblNewLabel1_1 = new JLabel("转运中心个数");// row name
 	private final JLabel lblNewLabel1_2 = new JLabel("需求者个数");
 	private final JLabel lblNewLabel1_3 = new JLabel("托盘返还者个数");
-	private final JLabel lblNewLabel2_1 = new JLabel("");
+	private final JLabel lblNewLabel2_1 = new JLabel("");// column name
 	private final JLabel lblNewLabel3_1 = new JLabel("");
 	private final JLabel lblNewLabel4_1 = new JLabel("");
-	private final JLabel lblNewLabel0_0 = new JLabel("");
 	private final JLabel lblNewLabel5_1 = new JLabel("");
+	private final JLabel lblNewLabel6_1 = new JLabel("");
+	private final JLabel lblNewLabel7_1 = new JLabel("");
 	private final JTextField jtf1_1 = new JTextField(), jtf1_2 = new JTextField(), jtf1_3 = new JTextField(),
 			jtf2_1 = new JTextField(), jtf2_2 = new JTextField(), jtf3_1 = new JTextField(), jtf3_2 = new JTextField(),
 			jtf4_1 = new JTextField(), jtf4_2 = new JTextField(), jtf4_3 = new JTextField(), jtf3_3 = new JTextField(),
 			jtf2_3 = new JTextField();
-	private String[] titles = new String[8];
+	// field for 3 3 3
+	private final JTextField jtf5_1 = new JTextField(), jtf5_2 = new JTextField(), jtf5_3 = new JTextField();
+	private final JTextField jtf6_1 = new JTextField(), jtf6_2 = new JTextField(), jtf6_3 = new JTextField();
 
+	private String[] titles = new String[10];
 	private int Anum, Bnum, Dnum, clickcount = 0;// transport center number,
 													// consumer number, deliver
 													// number
-	private double transfee[][] = new double[3][4];// transfer fee per
+	private double transfee[][] = new double[3][6];// transfer fee per
 													// distance(km)
-	private double transdis[][] = new double[3][4];// distance of each center
+	private double transdis[][] = new double[3][6];// distance of each center
 													// and individual(km)
 	private int transabt[][] = new int[3][4];// transport ability of each line
 	private int newtray[] = new int[3];// price for buying new trays
 	private double trayprice[] = new double[3];// price per tray
 	private int inlimit[] = new int[3];// storage limit for center
 	private double inprice[] = new double[3];// storage price per tray
-	private int goal[] = new int[4];// transport goal for each individual
+	private int goal[] = new int[6];// transport goal for each individual
 
 	private double[][] transprice;// transport price without buying new tray
 	private double[][] transaddprice;// transport price with buying new tray
@@ -89,6 +95,14 @@ public class EnteranceView extends JFrame {
 		lblNewLabel5_1.setBounds(440, 10, 403, 50);
 		contentPane2.add(lblNewLabel5_1);
 
+		lblNewLabel6_1.setFont(new Font("������κ", Font.BOLD, 15));
+		lblNewLabel6_1.setBounds(520, 10, 403, 50);
+		contentPane2.add(lblNewLabel6_1);
+
+		lblNewLabel7_1.setFont(new Font("������κ", Font.BOLD, 15));
+		lblNewLabel7_1.setBounds(600, 10, 403, 50);
+		contentPane2.add(lblNewLabel7_1);
+
 		lblNewLabel0_0.setFont(new Font("������κ", Font.BOLD, 15));
 		lblNewLabel0_0.setBounds(30, 10, 403, 50);
 		contentPane2.add(lblNewLabel0_0);
@@ -105,6 +119,12 @@ public class EnteranceView extends JFrame {
 		jtf4_1.setBounds(440, 50, 80, 50);
 		jtf4_2.setBounds(440, 100, 80, 50);
 		jtf4_3.setBounds(440, 150, 80, 50);
+		jtf5_1.setBounds(520, 50, 80, 50);
+		jtf5_2.setBounds(520, 100, 80, 50);
+		jtf5_3.setBounds(520, 150, 80, 50);
+		jtf6_1.setBounds(600, 50, 80, 50);
+		jtf6_2.setBounds(600, 100, 80, 50);
+		jtf6_3.setBounds(600, 150, 80, 50);
 
 		contentPane2.add(jtf1_1);
 		contentPane2.add(jtf1_2);
@@ -118,8 +138,14 @@ public class EnteranceView extends JFrame {
 		contentPane2.add(jtf4_3);
 		contentPane2.add(jtf2_3);
 		contentPane2.add(jtf3_3);
+		contentPane2.add(jtf5_1);
+		contentPane2.add(jtf5_2);
+		contentPane2.add(jtf5_3);
+		contentPane2.add(jtf6_1);
+		contentPane2.add(jtf6_2);
+		contentPane2.add(jtf6_3);
 		// first page
-		settext("", "个数", "", "", "", "转运中心个数", "需求者个数", "返还者个数");
+		settext("", "个数", "", "", "", "", "", "转运中心个数", "需求者个数", "返还者个数");
 		btnNewButton3 = new JButton("确定");
 		btnNewButton3.addMouseListener(new MouseAdapter() {
 			@Override
@@ -139,17 +165,18 @@ public class EnteranceView extends JFrame {
 					for (int i = 0; i < titles.length; i++) {
 						titles[i] = "";
 					}
-					for (int i = 5; i < 5 + Anum; i++) {
-						titles[i] = "转运中心" + String.valueOf(i - 4);
+					for (int i = 7; i < 7 + Anum; i++) {
+						titles[i] = "转运中心" + String.valueOf(i - 6);
 					}
 					for (int i = 1; i < 1 + Bnum; i++) {
 						titles[i] = "需求者" + String.valueOf(i);
 					}
-					for (int i = 3; i < 3 + Dnum; i++) {
-						titles[i] = "返还者" + String.valueOf(i - 2);
+					for (int i = 4; i < 4 + Dnum; i++) {
+						titles[i] = "返还者" + String.valueOf(i - 3);
 					}
 					titles[0] = "单位运费／元";
-					settext(titles[0], titles[1], titles[2], titles[3], titles[4], titles[5], titles[6], titles[7]);
+					settext(titles[0], titles[1], titles[2], titles[3], titles[4], titles[5], titles[6], titles[7],
+							titles[8], titles[9]);
 					break;
 				// third page
 				case 2:
@@ -157,86 +184,109 @@ public class EnteranceView extends JFrame {
 							{ jtf1_1.getText().isEmpty() ? -1 : Double.valueOf(jtf1_1.getText()),
 									jtf2_1.getText().isEmpty() ? -1 : Double.valueOf(jtf2_1.getText()),
 									jtf3_1.getText().isEmpty() ? -1 : Double.valueOf(jtf3_1.getText()),
-									jtf4_1.getText().isEmpty() ? -1 : Double.valueOf(jtf4_1.getText()) },
+									jtf4_1.getText().isEmpty() ? -1 : Double.valueOf(jtf4_1.getText()),
+									jtf5_1.getText().isEmpty() ? -1 : Double.valueOf(jtf5_1.getText()),
+									jtf6_1.getText().isEmpty() ? -1 : Double.valueOf(jtf6_1.getText()) },
 							{ jtf1_2.getText().isEmpty() ? -1 : Double.valueOf(jtf1_2.getText()),
 									jtf2_2.getText().isEmpty() ? -1 : Double.valueOf(jtf2_2.getText()),
 									jtf3_2.getText().isEmpty() ? -1 : Double.valueOf(jtf3_2.getText()),
-									jtf4_2.getText().isEmpty() ? -1 : Double.valueOf(jtf4_2.getText()) },
+									jtf4_2.getText().isEmpty() ? -1 : Double.valueOf(jtf4_2.getText()),
+									jtf5_2.getText().isEmpty() ? -1 : Double.valueOf(jtf5_2.getText()),
+									jtf6_2.getText().isEmpty() ? -1 : Double.valueOf(jtf6_2.getText()) },
 							{ jtf1_3.getText().isEmpty() ? -1 : Double.valueOf(jtf1_3.getText()),
 									jtf2_3.getText().isEmpty() ? -1 : Double.valueOf(jtf2_3.getText()),
 									jtf3_3.getText().isEmpty() ? -1 : Double.valueOf(jtf3_3.getText()),
-									jtf4_3.getText().isEmpty() ? -1 : Double.valueOf(jtf4_3.getText()) } };
+									jtf4_3.getText().isEmpty() ? -1 : Double.valueOf(jtf4_3.getText()),
+									jtf5_3.getText().isEmpty() ? -1 : Double.valueOf(jtf5_3.getText()),
+									jtf6_3.getText().isEmpty() ? -1 : Double.valueOf(jtf6_3.getText()) } };
 					for (int i = 0; i < titles.length; i++) {
 						titles[i] = "";
 					}
-					for (int i = 5; i < 5 + Anum; i++) {
-						titles[i] = "转运中心" + String.valueOf(i - 4);
+					for (int i = 7; i < 7 + Anum; i++) {
+						titles[i] = "转运中心" + String.valueOf(i - 6);
 					}
 					for (int i = 1; i < 1 + Bnum; i++) {
 						titles[i] = "需求者" + String.valueOf(i);
 					}
-					for (int i = 3; i < 3 + Dnum; i++) {
-						titles[i] = "返还者" + String.valueOf(i - 2);
+					for (int i = 4; i < 4 + Dnum; i++) {
+						titles[i] = "返还者" + String.valueOf(i - 3);
 					}
 					titles[0] = "运输里程／km";
-
-					settext(titles[0], titles[1], titles[2], titles[3], titles[4], titles[5], titles[6], titles[7]);
+					settext(titles[0], titles[1], titles[2], titles[3], titles[4], titles[5], titles[6], titles[7],
+							titles[8], titles[9]);
+					// settext(titles[0], titles[1], titles[2], titles[3],
+					// titles[4], titles[5], titles[6], titles[7]);
 					break;
 				// 4th page
 				case 3:
 					transdis = new double[][] {
-							{ jtf1_1.getText().isEmpty() ? 1 : Double.valueOf(jtf1_1.getText()),
-									jtf2_1.getText().isEmpty() ? 1 : Double.valueOf(jtf2_1.getText()),
-									jtf3_1.getText().isEmpty() ? 1 : Double.valueOf(jtf3_1.getText()),
-									jtf4_1.getText().isEmpty() ? 1 : Double.valueOf(jtf4_1.getText()) },
-							{ jtf1_2.getText().isEmpty() ? 1 : Double.valueOf(jtf1_2.getText()),
-									jtf2_2.getText().isEmpty() ? 1 : Double.valueOf(jtf2_2.getText()),
-									jtf3_2.getText().isEmpty() ? 1 : Double.valueOf(jtf3_2.getText()),
-									jtf4_2.getText().isEmpty() ? 1 : Double.valueOf(jtf4_2.getText()) },
-							{ jtf1_3.getText().isEmpty() ? 1 : Double.valueOf(jtf1_3.getText()),
-									jtf2_3.getText().isEmpty() ? 1 : Double.valueOf(jtf2_3.getText()),
-									jtf3_3.getText().isEmpty() ? 1 : Double.valueOf(jtf3_3.getText()),
-									jtf4_3.getText().isEmpty() ? 1 : Double.valueOf(jtf4_3.getText()) } };
+							{ jtf1_1.getText().isEmpty() ? -1 : Double.valueOf(jtf1_1.getText()),
+									jtf2_1.getText().isEmpty() ? -1 : Double.valueOf(jtf2_1.getText()),
+									jtf3_1.getText().isEmpty() ? -1 : Double.valueOf(jtf3_1.getText()),
+									jtf4_1.getText().isEmpty() ? -1 : Double.valueOf(jtf4_1.getText()),
+									jtf5_1.getText().isEmpty() ? -1 : Double.valueOf(jtf5_1.getText()),
+									jtf6_1.getText().isEmpty() ? -1 : Double.valueOf(jtf6_1.getText()) },
+							{ jtf1_2.getText().isEmpty() ? -1 : Double.valueOf(jtf1_2.getText()),
+									jtf2_2.getText().isEmpty() ? -1 : Double.valueOf(jtf2_2.getText()),
+									jtf3_2.getText().isEmpty() ? -1 : Double.valueOf(jtf3_2.getText()),
+									jtf4_2.getText().isEmpty() ? -1 : Double.valueOf(jtf4_2.getText()),
+									jtf5_2.getText().isEmpty() ? -1 : Double.valueOf(jtf5_2.getText()),
+									jtf6_2.getText().isEmpty() ? -1 : Double.valueOf(jtf6_2.getText()) },
+							{ jtf1_3.getText().isEmpty() ? -1 : Double.valueOf(jtf1_3.getText()),
+									jtf2_3.getText().isEmpty() ? -1 : Double.valueOf(jtf2_3.getText()),
+									jtf3_3.getText().isEmpty() ? -1 : Double.valueOf(jtf3_3.getText()),
+									jtf4_3.getText().isEmpty() ? -1 : Double.valueOf(jtf4_3.getText()),
+									jtf5_3.getText().isEmpty() ? -1 : Double.valueOf(jtf5_3.getText()),
+									jtf6_3.getText().isEmpty() ? -1 : Double.valueOf(jtf6_3.getText()) } };
 					for (int i = 0; i < titles.length; i++) {
 						titles[i] = "";
 					}
-					for (int i = 5; i < 5 + Anum; i++) {
-						titles[i] = "转运中心" + String.valueOf(i - 4);
+					for (int i = 7; i < 7 + Anum; i++) {
+						titles[i] = "转运中心" + String.valueOf(i - 6);
 					}
 					for (int i = 1; i < 1 + Bnum; i++) {
 						titles[i] = "需求者" + String.valueOf(i);
 					}
-					for (int i = 3; i < 3 + Dnum; i++) {
-						titles[i] = "返还者" + String.valueOf(i - 2);
+					for (int i = 4; i < 4 + Dnum; i++) {
+						titles[i] = "返还者" + String.valueOf(i - 3);
 					}
 					titles[0] = "运输能力";
-
-					settext(titles[0], titles[1], titles[2], titles[3], titles[4], titles[5], titles[6], titles[7]);
+					settext(titles[0], titles[1], titles[2], titles[3], titles[4], titles[5], titles[6], titles[7],
+							titles[8], titles[9]);
+					// settext(titles[0], titles[1], titles[2], titles[3],
+					// titles[4], titles[5], titles[6], titles[7]);
 					break;
 				// 5th page
 				case 4:
 					transabt = new int[][] {
-							{ jtf1_1.getText().isEmpty() ? 0 : Integer.valueOf(jtf1_1.getText()),
-									jtf2_1.getText().isEmpty() ? 0 : Integer.valueOf(jtf2_1.getText()),
-									jtf3_1.getText().isEmpty() ? 0 : Integer.valueOf(jtf3_1.getText()),
-									jtf4_1.getText().isEmpty() ? 0 : Integer.valueOf(jtf4_1.getText()) },
-							{ jtf1_2.getText().isEmpty() ? 0 : Integer.valueOf(jtf1_2.getText()),
-									jtf2_2.getText().isEmpty() ? 0 : Integer.valueOf(jtf2_2.getText()),
-									jtf3_2.getText().isEmpty() ? 0 : Integer.valueOf(jtf3_2.getText()),
-									jtf4_2.getText().isEmpty() ? 0 : Integer.valueOf(jtf4_2.getText()) },
-							{ jtf1_3.getText().isEmpty() ? 0 : Integer.valueOf(jtf1_3.getText()),
-									jtf2_3.getText().isEmpty() ? 0 : Integer.valueOf(jtf2_3.getText()),
-									jtf3_3.getText().isEmpty() ? 0 : Integer.valueOf(jtf3_3.getText()),
-									jtf4_3.getText().isEmpty() ? 0 : Integer.valueOf(jtf4_3.getText()) } };
+							{ jtf1_1.getText().isEmpty() ? -1 : Integer.valueOf(jtf1_1.getText()),
+									jtf2_1.getText().isEmpty() ? -1 : Integer.valueOf(jtf2_1.getText()),
+									jtf3_1.getText().isEmpty() ? -1 : Integer.valueOf(jtf3_1.getText()),
+									jtf4_1.getText().isEmpty() ? -1 : Integer.valueOf(jtf4_1.getText()),
+									jtf5_1.getText().isEmpty() ? -1 : Integer.valueOf(jtf5_1.getText()),
+									jtf6_1.getText().isEmpty() ? -1 : Integer.valueOf(jtf6_1.getText()) },
+							{ jtf1_2.getText().isEmpty() ? -1 : Integer.valueOf(jtf1_2.getText()),
+									jtf2_2.getText().isEmpty() ? -1 : Integer.valueOf(jtf2_2.getText()),
+									jtf3_2.getText().isEmpty() ? -1 : Integer.valueOf(jtf3_2.getText()),
+									jtf4_2.getText().isEmpty() ? -1 : Integer.valueOf(jtf4_2.getText()),
+									jtf5_2.getText().isEmpty() ? -1 : Integer.valueOf(jtf5_2.getText()),
+									jtf6_2.getText().isEmpty() ? -1 : Integer.valueOf(jtf6_2.getText()) },
+							{ jtf1_3.getText().isEmpty() ? -1 : Integer.valueOf(jtf1_3.getText()),
+									jtf2_3.getText().isEmpty() ? -1 : Integer.valueOf(jtf2_3.getText()),
+									jtf3_3.getText().isEmpty() ? -1 : Integer.valueOf(jtf3_3.getText()),
+									jtf4_3.getText().isEmpty() ? -1 : Integer.valueOf(jtf4_3.getText()),
+									jtf5_3.getText().isEmpty() ? -1 : Integer.valueOf(jtf5_3.getText()),
+									jtf6_3.getText().isEmpty() ? -1 : Integer.valueOf(jtf6_3.getText()) } };
 					for (int i = 0; i < titles.length; i++) {
 						titles[i] = "";
 					}
-					for (int i = 5; i < 5 + Anum; i++) {
-						titles[i] = "转运中心" + String.valueOf(i - 4);
+					for (int i = 7; i < 7 + Anum; i++) {
+						titles[i] = "转运中心" + String.valueOf(i - 6);
 					}
 					titles[0] = "新进数量／成本";
 
-					settext(titles[0], "数量", "成本", titles[3], titles[4], titles[5], titles[6], titles[7]);
+					settext(titles[0], "数量", "成本", titles[3], titles[4], titles[5], titles[6], titles[7], titles[8],
+							titles[9]);
 					break;
 				// 6th page
 				case 5:
@@ -249,11 +299,12 @@ public class EnteranceView extends JFrame {
 					for (int i = 0; i < titles.length; i++) {
 						titles[i] = "";
 					}
-					for (int i = 5; i < 5 + Anum; i++) {
-						titles[i] = "转运中心" + String.valueOf(i - 4);
+					for (int i = 7; i < 7 + Anum; i++) {
+						titles[i] = "转运中心" + String.valueOf(i - 6);
 					}
 					titles[0] = "库存限制／成本";
-					settext(titles[0], "限制", "成本", titles[3], titles[4], titles[5], titles[6], titles[7]);
+					settext(titles[0], "限制", "成本", titles[3], titles[4], titles[5], titles[6], titles[7], titles[8],
+							titles[9]);
 					break;
 				// 7th page
 				case 6:
@@ -269,12 +320,13 @@ public class EnteranceView extends JFrame {
 					for (int i = 1; i < 1 + Bnum; i++) {
 						titles[i] = "需求者" + String.valueOf(i);
 					}
-					for (int i = 3; i < 3 + Dnum; i++) {
-						titles[i] = "返还者" + String.valueOf(i - 2);
+					for (int i = 4; i < 4 + Dnum; i++) {
+						titles[i] = "返还者" + String.valueOf(i - 3);
 					}
 					titles[0] = "需求量／返还量";
 
-					settext(titles[0], titles[1], titles[2], titles[3], titles[4], "数量", titles[6], titles[7]);
+					settext(titles[0], titles[1], titles[2], titles[3], titles[4], titles[5], titles[6], "数量",
+							titles[8], titles[9]);
 					break;
 				// the last click of button, first check the data's
 				// creditability, and then begin calculate the output.
@@ -283,7 +335,9 @@ public class EnteranceView extends JFrame {
 					goal = new int[] { jtf1_1.getText().isEmpty() ? 0 : Integer.valueOf(jtf1_1.getText()),
 							jtf2_1.getText().isEmpty() ? 0 : Integer.valueOf(jtf2_1.getText()),
 							jtf3_1.getText().isEmpty() ? 0 : Integer.valueOf(jtf3_1.getText()),
-							jtf4_1.getText().isEmpty() ? 0 : Integer.valueOf(jtf4_1.getText()) };
+							jtf4_1.getText().isEmpty() ? 0 : Integer.valueOf(jtf4_1.getText()),
+							jtf5_1.getText().isEmpty() ? 0 : Integer.valueOf(jtf4_1.getText()),
+							jtf6_1.getText().isEmpty() ? 0 : Integer.valueOf(jtf4_1.getText()) };
 					// check if exceed the transport ability
 					for (int i = 0; i < goal.length; i++) {
 						if (goal[i] > transabt[0][i] + transabt[1][i] + transabt[2][i]) {
@@ -292,7 +346,8 @@ public class EnteranceView extends JFrame {
 									JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 							if (value == JOptionPane.OK_OPTION) {
 								clickcount = 0;
-								settext("", "个数", "", "", "", "转运中心个数", "需求者个数", "返还者个数");
+								settext("", "个数", "", "", "", "", "", "转运中心个数", "需求者个数", "返还者个数");
+								//settext("", "个数", "", "", "", "转运中心个数", "需求者个数", "返还者个数");
 								contentPane2.updateUI();
 								break;
 							}
@@ -310,7 +365,9 @@ public class EnteranceView extends JFrame {
 								JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 						if (value == JOptionPane.OK_OPTION) {
 							clickcount = 0;
-							settext("", "个数", "", "", "", "转运中心个数", "需求者个数", "返还者个数");
+							settext("", "个数", "", "", "", "", "", "转运中心个数", "需求者个数", "返还者个数");
+							// settext("", "个数", "", "", "", "转运中心个数", "需求者个数",
+							// "返还者个数");
 							contentPane2.updateUI();
 							break;
 						}
@@ -323,18 +380,21 @@ public class EnteranceView extends JFrame {
 					// fee/distance in first page
 					transprice = new double[][] {
 							{ transdis[0][0] * transfee[0][0], transdis[0][1] * transfee[0][1],
-									transdis[0][2] * transfee[0][2], transdis[0][3] * transfee[0][3] },
+									transdis[0][2] * transfee[0][2], transdis[0][3] * transfee[0][3],
+									transdis[0][4] * transfee[0][4], transdis[0][5] * transfee[0][5] },
 							{ transdis[1][0] * transfee[1][0], transdis[1][1] * transfee[1][1],
-									transdis[1][2] * transfee[1][2], transdis[1][3] * transfee[1][3] },
+									transdis[1][2] * transfee[1][2], transdis[1][3] * transfee[1][3],
+									transdis[1][4] * transfee[1][4], transdis[1][5] * transfee[1][5] },
 							{ transdis[2][0] * transfee[2][0], transdis[2][1] * transfee[2][1],
-									transdis[2][2] * transfee[2][2], transdis[2][3] * transfee[2][3] } };
+									transdis[2][2] * transfee[2][2], transdis[2][3] * transfee[2][3],
+									transdis[2][4] * transfee[2][4], transdis[2][5] * transfee[2][5] } };
 
 					// use the data we get to initialize PriceMap
-					PriceMap[] transmap = new PriceMap[12];
+					PriceMap[] transmap = new PriceMap[18];
 					for (int i = 0; i < transprice.length; i++) {
 						for (int j = 0; j < transprice[i].length; j++) {
-							transmap[4 * i + j] = new PriceMap(transprice[i][j], i * 100 + j,
-									j <= 1 ? "需求者" + (j + 1) : "返还者" + (j - 1));
+							transmap[6 * i + j] = new PriceMap(transprice[i][j], i * 100 + j,
+									j <= 2 ? "需求者" + (j + 1) : "返还者" + (j - 2));
 						}
 					}
 					// sort the data according to price in order to generate
@@ -387,7 +447,7 @@ public class EnteranceView extends JFrame {
 	private void output(PriceMap[] map, int[] goal, int[] inlimit) {
 		// out put method for no additional tray, user sorted Pricemap as
 		// reference to try the lowest possible output in advanced
-		double sum =0 ;
+		double sum = 0;
 		File file = new File("output.txt"); // create output file
 		FileWriter fileWriter = null;
 		try {
@@ -410,38 +470,38 @@ public class EnteranceView extends JFrame {
 				if (tgoal > 0 && tlmit > 0) {
 					if (tgoal >= tlmit) {
 						try {
-							
+
 							String s = new String(
-									"转运中心" + map[i].whos / 100 + " ---" + (map[i].whos % 100 <= 1 ? "送至" : "获取") + tlmit
+									"转运中心" + map[i].whos / 100 + " ---" + (map[i].whos % 100 <= 2 ? "送至" : "获取") + tlmit
 											+ "件,花费" + tlmit * map[i].price + "----   " + map[i].name + "\n");
 							fileWriter.append(s);
-							
+
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						sum = sum+tlmit * map[i].price;
-						System.out.println(	"转运中心" + map[i].whos / 100 + " ---" + (map[i].whos % 100 <= 1 ? "送至" : "获取") + tlmit
-								+ "件,花费" + tlmit * map[i].price + "----   " + map[i].name);
+						sum = sum + tlmit * map[i].price;
+						System.out.println("转运中心" + map[i].whos / 100 + " ---" + (map[i].whos % 100 <= 2 ? "送至" : "获取")
+								+ tlmit + "件,花费" + tlmit * map[i].price + "----   " + map[i].name);
 						tgoal = tgoal - tlmit;
 						tlmit = 0;
 						inlimit[map[i].whos / 100] = tlmit;
 						goal[map[i].whos % 100] = tgoal;
 					} else {
 						try {
-							
+
 							String s = new String(
-									"转运中心" + map[i].whos / 100 + " ---" + (map[i].whos % 100 <= 1 ? "送至" : "获取") + tgoal
+									"转运中心" + map[i].whos / 100 + " ---" + (map[i].whos % 100 <= 2 ? "送至" : "获取") + tgoal
 											+ "件,花费" + tlmit * map[i].price + "----   " + map[i].name + "\n");
 							fileWriter.append(s);
-							
+
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						sum = sum+tlmit * map[i].price;
-						System.out.println("转运中心" + map[i].whos / 100 + " ---" + (map[i].whos % 100 <= 1 ? "送至" : "获取") + tgoal
-								+ "件,花费" + tlmit * map[i].price + "----   " + map[i].name );
+						sum = sum + tlmit * map[i].price;
+						System.out.println("转运中心" + map[i].whos / 100 + " ---" + (map[i].whos % 100 <= 2 ? "送至" : "获取")
+								+ tgoal + "件,花费" + tlmit * map[i].price + "----   " + map[i].name);
 						tlmit = tlmit - tgoal;
 						tgoal = 0;
 						inlimit[map[i].whos / 100] = tlmit;
@@ -450,15 +510,159 @@ public class EnteranceView extends JFrame {
 				}
 			}
 		}
-		System.out.println("总花费"+sum);
+		System.out.println("总花费" + sum);
 		try {
-			fileWriter.append("总花费"+sum);
+			fileWriter.append("总花费" + sum);
 			fileWriter.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+	}
+
+	private void settext(String H, String a1, String a2, String a3, String a4, String a5, String a6, String b1,
+			String b2, String b3) {
+		// integration of the method of update each page according to
+		// columnheads and rowheads
+		lblNewLabel1_1.setText(b1);
+		lblNewLabel1_2.setText(b2);
+		lblNewLabel1_3.setText(b3);
+		lblNewLabel0_0.setText(H);
+		lblNewLabel2_1.setText(a1);
+		lblNewLabel3_1.setText(a2);
+		lblNewLabel4_1.setText(a3);
+		lblNewLabel5_1.setText(a4);
+		lblNewLabel6_1.setText(a5);
+		lblNewLabel7_1.setText(a6);
+		if (a1.isEmpty()) {
+			jtf1_1.setVisible(false);
+		} else {
+			jtf1_1.setVisible(true);
+		}
+		if (a2.isEmpty()) {
+			jtf2_1.setVisible(false);
+		} else {
+			jtf2_1.setVisible(true);
+		}
+		if (a3.isEmpty()) {
+			jtf3_1.setVisible(false);
+		} else {
+			jtf3_1.setVisible(true);
+		}
+		if (a4.isEmpty()) {
+			jtf4_1.setVisible(false);
+		} else {
+			jtf4_1.setVisible(true);
+		}
+		if (a5.isEmpty()) {
+			jtf5_1.setVisible(false);
+		} else {
+			jtf5_1.setVisible(true);
+		}
+		if (a6.isEmpty()) {
+			jtf6_1.setVisible(false);
+		} else {
+			jtf6_1.setVisible(true);
+		}
 		
+		if (b2.isEmpty()) {
+			jtf1_2.setVisible(false);
+			jtf2_2.setVisible(false);
+			jtf3_2.setVisible(false);
+			jtf4_2.setVisible(false);
+			jtf5_2.setVisible(false);
+			jtf6_2.setVisible(false);
+		} else {
+			if (a1.isEmpty()) {
+				jtf1_2.setVisible(false);
+			} else {
+				jtf1_2.setVisible(true);
+			}
+			if (a2.isEmpty()) {
+				jtf2_2.setVisible(false);
+			} else {
+				jtf2_2.setVisible(true);
+			}
+			if (a3.isEmpty()) {
+				jtf3_2.setVisible(false);
+			} else {
+				jtf3_2.setVisible(true);
+			}
+			if (a4.isEmpty()) {
+				jtf4_2.setVisible(false);
+			} else {
+				jtf4_2.setVisible(true);
+			}
+			if (a5.isEmpty()) {
+				jtf5_2.setVisible(false);
+			} else {
+				jtf5_2.setVisible(true);
+			}
+			if (a6.isEmpty()) {
+				jtf6_2.setVisible(false);
+			} else {
+				jtf6_2.setVisible(true);
+			}
+		}
+		if (b3.isEmpty()) {
+			jtf1_3.setVisible(false);
+			jtf2_3.setVisible(false);
+			jtf3_3.setVisible(false);
+			jtf4_3.setVisible(false);
+			jtf5_3.setVisible(false);
+			jtf6_3.setVisible(false);
+		} else {
+			if (a1.isEmpty()) {
+				jtf1_3.setVisible(false);
+			} else {
+				jtf1_3.setVisible(true);
+			}
+			if (a2.isEmpty()) {
+				jtf2_3.setVisible(false);
+			} else {
+				jtf2_3.setVisible(true);
+			}
+			if (a3.isEmpty()) {
+				jtf3_3.setVisible(false);
+			} else {
+				jtf3_3.setVisible(true);
+			}
+			if (a4.isEmpty()) {
+				jtf4_3.setVisible(false);
+			} else {
+				jtf4_3.setVisible(true);
+			}
+			if (a5.isEmpty()) {
+				jtf5_3.setVisible(false);
+			} else {
+				jtf5_3.setVisible(true);
+			}
+			if (a6.isEmpty()) {
+				jtf6_3.setVisible(false);
+			} else {
+				jtf6_3.setVisible(true);
+			}
+		}
+
+		jtf1_1.setText("");
+		jtf1_2.setText("");
+		jtf1_3.setText("");
+		jtf2_1.setText("");
+		jtf2_2.setText("");
+		jtf3_1.setText("");
+		jtf3_2.setText("");
+		jtf4_1.setText("");
+		jtf4_2.setText("");
+		jtf4_3.setText("");
+		jtf3_3.setText("");
+		jtf2_3.setText("");
+		jtf5_1.setText("");
+		jtf5_2.setText("");
+		jtf5_3.setText("");
+		jtf6_1.setText("");
+		jtf6_2.setText("");
+		jtf6_3.setText("");
 	}
 
 	private void settext(String H, String a1, String a2, String a3, String a4, String b1, String b2, String b3) {
@@ -588,7 +792,7 @@ public class EnteranceView extends JFrame {
 				contentPane.setVisible(false);
 				setContentPane(contentPane2);
 				setTitle("计算界面");
-				setBounds(400, 200, 600, 300);
+				setBounds(800, 200, 600, 300);
 			}
 		});
 		contentPane.add(btnNewButton);
